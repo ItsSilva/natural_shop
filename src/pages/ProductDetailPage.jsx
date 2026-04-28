@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { products } from '../data/products';
+import { productService } from '../services/productService';
 import { useCart } from '../context/CartContext';
 import ProductCard from '../components/ProductCard';
 
@@ -8,15 +8,53 @@ export default function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const product = products.find(p => p.id === Number(id));
-  const [selectedFlavor, setSelectedFlavor] = useState(product?.flavors[0] || '');
+  const [product, setProduct] = useState(null);
+  const [related, setRelated] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedFlavor, setSelectedFlavor] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
-  if (!product) {
+  useEffect(() => {
+    const loadProduct = async () => {
+      try {
+        setLoading(true);
+        const productData = await productService.getProductById(id);
+        setProduct(productData);
+        setSelectedFlavor(productData.flavors[0] || '');
+
+        // Load related products
+        const relatedData = await productService.getProductsByCategory(productData.category_id);
+        setRelated(relatedData.filter(p => p.id !== productData.id).slice(0, 3));
+      } catch (err) {
+        console.error('Error loading product:', err);
+        setError('Producto no encontrado');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      loadProduct();
+    }
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div style={{ background: '#FAFAFA', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>🏋️</div>
+          <p style={{ fontSize: 18, color: '#6A7282' }}>Cargando producto...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !product) {
     return (
       <div style={{ padding: '80px 68px', textAlign: 'center' }}>
-        <h2>Producto no encontrado</h2>
+        <h2>{error || 'Producto no encontrado'}</h2>
         <button onClick={() => navigate('/catalogo')} style={{ marginTop: 16, padding: '10px 24px', background: '#1F1F21', color: 'white', borderRadius: 10, fontSize: 16, cursor: 'pointer' }}>
           Volver al catálogo
         </button>
@@ -24,8 +62,7 @@ export default function ProductDetailPage() {
     );
   }
 
-  const related = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
-  const discount = Math.round((1 - product.price / product.originalPrice) * 100);
+  const discount = product.original_price > product.price ? Math.round((1 - product.price / product.original_price) * 100) : 0;
   const formatPrice = (p) => '$' + p.toLocaleString('es-CO');
 
   const handleAddToCart = () => {

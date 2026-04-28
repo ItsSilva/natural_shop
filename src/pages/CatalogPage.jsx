@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { products, categories, brands } from '../data/products';
+import { productService } from '../services/productService';
 import ProductCard from '../components/ProductCard';
 
 export default function CatalogPage() {
@@ -9,25 +9,57 @@ export default function CatalogPage() {
   const catParam = searchParams.get('categoria') || '';
   const brandParam = searchParams.get('marca') || '';
 
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [selectedCategory, setSelectedCategory] = useState(catParam);
   const [selectedBrand, setSelectedBrand] = useState(brandParam);
   const [priceRange, setPriceRange] = useState([0, 300000]);
   const [sortBy, setSortBy] = useState('popular');
   const [search, setSearch] = useState(searchQ);
 
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const [productsData, categoriesData, brandsData] = await Promise.all([
+          productService.getAllProducts(),
+          productService.getCategories(),
+          productService.getBrands()
+        ]);
+
+        setProducts(productsData);
+        setCategories(categoriesData);
+        setBrands(brandsData);
+      } catch (err) {
+        console.error('Error loading catalog data:', err);
+        setError('Error al cargar los productos. Por favor, recarga la página.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
   const filtered = useMemo(() => {
+    if (!products.length) return [];
+
     let list = [...products];
     if (search) {
       list = list.filter(p =>
         p.name.toLowerCase().includes(search.toLowerCase()) ||
-        p.brand.toLowerCase().includes(search.toLowerCase())
+        p.brand_name.toLowerCase().includes(search.toLowerCase())
       );
     }
     if (selectedCategory) {
-      list = list.filter(p => p.category.toLowerCase().replace(' ', '-') === selectedCategory || p.category === selectedCategory);
+      list = list.filter(p => p.category_id === selectedCategory);
     }
     if (selectedBrand) {
-      list = list.filter(p => p.brand.toLowerCase().includes(selectedBrand));
+      list = list.filter(p => p.brand_id === selectedBrand);
     }
     list = list.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);
     switch (sortBy) {
@@ -37,9 +69,44 @@ export default function CatalogPage() {
       default: list.sort((a, b) => b.reviews - a.reviews);
     }
     return list;
-  }, [search, selectedCategory, selectedBrand, priceRange, sortBy]);
+  }, [products, search, selectedCategory, selectedBrand, priceRange, sortBy]);
 
   const formatPrice = (p) => '$' + p.toLocaleString('es-CO');
+
+  if (loading) {
+    return (
+      <div style={{ background: '#FAFAFA', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>🏋️</div>
+          <p style={{ fontSize: 18, color: '#6A7282' }}>Cargando catálogo...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ background: '#FAFAFA', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>⚠️</div>
+          <p style={{ fontSize: 18, color: '#6A7282', marginBottom: 16 }}>{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            style={{
+              padding: '10px 20px',
+              background: '#1F1F21',
+              color: 'white',
+              border: 'none',
+              borderRadius: 10,
+              cursor: 'pointer'
+            }}
+          >
+            Recargar página
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ background: '#FAFAFA', minHeight: '100vh' }}>

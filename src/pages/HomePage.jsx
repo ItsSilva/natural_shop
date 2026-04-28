@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { products, categories, brands, stores, news } from '../data/products';
+import { productService } from '../services/productService';
 import ProductCard from '../components/ProductCard';
 import CategoryCard from '../components/CategoryCard';
 import BrandCard from '../components/BrandCard';
@@ -8,8 +8,74 @@ import SectionHeader from '../components/SectionHeader';
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const popularProducts = products.slice(0, 4);
+  const [popularProducts, setPopularProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [stores, setStores] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [openStore, setOpenStore] = useState(null);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const [productsData, categoriesData, brandsData, storesData] = await Promise.all([
+          productService.getAllProducts(),
+          productService.getCategories(),
+          productService.getBrands(),
+          productService.getStores()
+        ]);
+
+        setPopularProducts(productsData.slice(0, 4));
+        setCategories(categoriesData);
+        setBrands(brandsData);
+        setStores(storesData);
+      } catch (err) {
+        console.error('Error loading home data:', err);
+        setError('Error al cargar los datos. Por favor, recarga la página.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ background: '#FAFAFA', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>🏋️</div>
+          <p style={{ fontSize: 18, color: '#6A7282' }}>Cargando productos...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ background: '#FAFAFA', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>⚠️</div>
+          <p style={{ fontSize: 18, color: '#6A7282', marginBottom: 16 }}>{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            style={{
+              padding: '10px 20px',
+              background: '#1F1F21',
+              color: 'white',
+              border: 'none',
+              borderRadius: 10,
+              cursor: 'pointer'
+            }}
+          >
+            Recargar página
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ background: '#FAFAFA' }}>
