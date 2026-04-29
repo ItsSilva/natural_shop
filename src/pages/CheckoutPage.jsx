@@ -7,6 +7,7 @@ export default function CheckoutPage() {
   const navigate = useNavigate();
   const { cartItems, total, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -47,51 +48,8 @@ export default function CheckoutPage() {
       return;
     }
 
-    try {
-      setLoading(true);
-
-      // Prepare order data
-      const orderData = {
-        shipping_name: `${formData.firstName} ${formData.lastName}`,
-        shipping_phone: formData.phone,
-        shipping_email: formData.email,
-        shipping_city: formData.city,
-        shipping_address: formData.address,
-        shipping_neighborhood: formData.neighborhood,
-        shipping_postal: formData.postalCode,
-        subtotal: total,
-        shipping_cost: shippingCost,
-        total: finalTotal,
-        payment_method: formData.paymentMethod,
-        notes: formData.notes,
-        status: 'pending'
-      };
-
-      // Create order
-      const order = await orderService.createOrder(orderData);
-
-      // Create order items
-      const orderItems = cartItems.map(item => ({
-        product_id: item.id,
-        product_name: item.name,
-        product_brand: item.brand_name || item.brand,
-        flavor: item.flavor || '',
-        unit_price: item.price,
-        quantity: item.quantity
-      }));
-
-      await orderService.createOrderItems(order.id, orderItems);
-
-      // Clear cart and redirect to confirmation
-      clearCart();
-      navigate(`/orden-confirmada?orderId=${order.id}`);
-
-    } catch (error) {
-      console.error('Error creating order:', error);
-      alert('Error al procesar el pedido. Por favor intenta de nuevo.');
-    } finally {
-      setLoading(false);
-    }
+    // Mostrar modal en lugar de procesar la compra
+    setShowModal(true);
   };
 
   if (cartItems.length === 0) {
@@ -262,6 +220,34 @@ export default function CheckoutPage() {
           <p style={{ textAlign: 'center', color: '#99A1AF', fontSize: 12, marginTop: 12 }}>
             🔒 Pago 100% seguro • Productos originales garantizados
           </p>
+
+          {showModal && (
+            <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.65)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, zIndex: 9999 }}>
+              <div style={{ width: '100%', maxWidth: 520, background: 'white', borderRadius: 24, padding: 32, boxShadow: '0 30px 60px rgba(15,23,42,0.18)' }}>
+                <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 16, color: '#111827' }}>
+                  Prueba de usuario completada
+                </h2>
+                <p style={{ color: '#4B5563', fontSize: 16, lineHeight: '26px', marginBottom: 20 }}>
+                  Gracias por completar la prueba. No se ha realizado ninguna compra. Todo lo que estamos haciendo es con fines investigativos.
+                </p>
+                <button
+                  onClick={() => setShowModal(false)}
+                  style={{
+                    width: '100%',
+                    padding: '14px',
+                    background: '#1F1F21',
+                    color: 'white',
+                    borderRadius: 12,
+                    fontSize: 16,
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </form>
