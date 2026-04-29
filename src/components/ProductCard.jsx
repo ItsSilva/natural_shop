@@ -37,17 +37,17 @@ export default function ProductCard({ product }) {
       }}
     >
       {/* Image */}
-      <div style={{ position: 'relative', height: 225 }}>
+      <div style={{ position: 'relative', height: 225, background: '#F3F4F6' }}>
         <img
           src={product.image}
           alt={product.name}
           style={{
             width: '100%',
-            height: 225,
-            objectFit: 'cover',
+            height: '100%',
+            objectFit: 'contain',
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
-            background: '#DCDCDC'
+            background: '#F3F4F6'
           }}
         />
         {product.badge && (

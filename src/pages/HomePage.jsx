@@ -189,7 +189,7 @@ export default function HomePage() {
         {/* Productos populares */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: 25 }}>
           <SectionHeader title="Productos populares" linkTo="/catalogo" />
-          <div style={{ display: 'flex', gap: 39, flexWrap: 'wrap' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 24 }}>
             {popularProducts.map(p => <ProductCard key={p.id} product={p} />)}
           </div>
         </section>
@@ -205,7 +205,7 @@ export default function HomePage() {
         {/* Marcas */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: 25 }}>
           <SectionHeader title="Marcas" linkTo="/marcas" />
-          <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 }}>
             {brands.map(brand => <BrandCard key={brand.id} brand={brand} />)}
           </div>
         </section>

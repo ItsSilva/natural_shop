@@ -97,7 +97,7 @@ export default function ProductDetailPage() {
           <img
             src={product.image}
             alt={product.name}
-            style={{ width: '100%', height: 400, objectFit: 'cover' }}
+            style={{ width: '100%', height: 400, objectFit: 'contain', background: '#F3F4F6' }}
           />
         </div>
 
