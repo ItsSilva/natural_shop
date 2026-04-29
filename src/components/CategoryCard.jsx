@@ -8,17 +8,17 @@ export default function CategoryCard({ category }) {
     <div
       onClick={() => navigate(`/catalogo?categoria=${category.id}`)}
       style={{
-        padding: 30,
         background: 'white',
-        boxShadow: '0px 2px 10px rgba(0,0,0,0.06)',
-        borderRadius: 10,
+        borderRadius: 28,
+        padding: 24,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: 15,
+        gap: 18,
         cursor: 'pointer',
-        minWidth: 180,
-        transition: 'transform 0.2s, box-shadow 0.2s'
+        transition: 'transform 0.2s, box-shadow 0.2s',
+        boxShadow: '0px 20px 60px rgba(15, 23, 42, 0.08)',
+        width: '100%'
       }}
       onMouseEnter={e => {
         e.currentTarget.style.transform = 'translateY(-3px)';
@@ -30,27 +30,24 @@ export default function CategoryCard({ category }) {
       }}
     >
       <div style={{
-        alignSelf: 'stretch',
-        height: 134,
-        paddingLeft: 31,
-        paddingRight: 31,
-        paddingTop: 14,
-        paddingBottom: 14,
-        background: 'radial-gradient(ellipse 50% 50% at 50% 50%, #7F7F87 0%, #282829 100%)',
-        borderRadius: 67,
+        width: 144,
+        height: 144,
+        borderRadius: '50%',
+        background: '#111827',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
       }}>
-        <span style={{ fontSize: 52 }}>{category.icon}</span>
+        <span style={{ fontSize: 48 }}>{category.icon}</span>
       </div>
       <p style={{
         textAlign: 'center',
-        color: '#1F1F21',
+        color: '#111827',
         fontSize: 18,
-        fontWeight: 600,
-        lineHeight: '18px',
-        letterSpacing: 0.35
+        fontWeight: 700,
+        lineHeight: '24px',
+        letterSpacing: 0.35,
+        margin: 0
       }}>
         {category.name}
       </p>

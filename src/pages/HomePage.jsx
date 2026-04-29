@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { productService } from '../services/productService';
 import ProductCard from '../components/ProductCard';
 import CategoryCard from '../components/CategoryCard';
 import BrandCard from '../components/BrandCard';
 import SectionHeader from '../components/SectionHeader';
+import homeHeroImage from '../assets/images/banner-hero-home.svg';
+import limonadaNewsImage from '../assets/images/limonada-proteina-card-news.svg';
+import productosPopularesNewsImage from '../assets/images/productos-propulares-card-news.svg';
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -80,106 +83,52 @@ export default function HomePage() {
   return (
     <div style={{ background: '#FAFAFA' }}>
       {/* ========== HERO ========== */}
-      <section style={{ position: 'relative', height: 624, overflow: 'hidden' }}>
-        {/* Hero BG */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(135deg, #1a1a2e 0%, #2d2d44 40%, #1f1f21 100%)',
-        }} />
-        {/* Overlay */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'rgba(0,0,0,0.20)',
-          backdropFilter: 'blur(3.5px)'
-        }} />
-        {/* Bottom fade */}
-        <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: 88,
-          background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, black 100%)'
-        }} />
-        {/* Top fade */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: 88,
-          background: 'linear-gradient(180deg, black 0%, rgba(0,0,0,0) 100%)'
-        }} />
+      <section style={{ position: 'relative', overflow: 'hidden', minHeight: 760, background: '#0D0D12' }}>
+        <img
+          src={homeHeroImage}
+          alt="Hero background"
+          style={{
+            position: 'absolute', left: 0, top: 0,
+            width: '100%', height: '100%',
+            objectFit: 'cover',
+            zIndex: 0
+          }}
+        />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.16) 0%, rgba(0,0,0,0.56) 100%)', zIndex: 1 }} />
+        <div style={{ position: 'absolute', left: 0, bottom: 0, right: 0, height: 88, background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.66) 100%)', zIndex: 1 }} />
+        <div style={{ position: 'absolute', left: 0, top: 256, width: 464, height: 96, background: '#D9D9D9', boxShadow: '200px 200px 200px rgba(217,217,217,0.35)', borderRadius: 9999, filter: 'blur(100px)', opacity: 0.24, zIndex: 1 }} />
 
-        {/* Envío gratis banner */}
-        <div style={{
-          position: 'absolute',
-          top: 112,
-          left: 0,
-          background: '#FFEB3B',
-          padding: '10px 68px 10px 68px',
-          display: 'inline-flex',
-          alignItems: 'center'
-        }}>
-          <span style={{ color: 'black', fontSize: 16, fontWeight: 700, lineHeight: '24px' }}>
-            ENVÍO GRATIS en compras superiores a $150.000
-          </span>
-        </div>
-
-        {/* Hero text */}
-        <div style={{
-          position: 'absolute',
-          left: 66,
-          top: 197,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 3
-        }}>
-          <h1 style={{ color: '#FEFCE8', fontSize: 68, fontWeight: 800, lineHeight: 1.1 }}>
+        <div style={{ position: 'absolute', left: 66, top: 341, display: 'inline-flex', flexDirection: 'column', gap: 3, zIndex: 2, maxWidth: 835 }}>
+          <div style={{ color: '#FEFCE8', fontSize: 68, fontWeight: 800, lineHeight: 1.05, wordWrap: 'break-word' }}>
             Suplementos Deportivos
-          </h1>
-          <h1 style={{ color: '#FDC700', fontSize: 68, fontWeight: 800, lineHeight: 1.1 }}>
+          </div>
+          <div style={{ color: '#FDC700', fontSize: 68, fontWeight: 800, lineHeight: 1.05, wordWrap: 'break-word' }}>
             100% Originales
-          </h1>
-          <p style={{ color: '#FAFAFA', fontSize: 28, fontWeight: 500, maxWidth: 835, marginTop: 8 }}>
+          </div>
+          <div style={{ width: 835, color: '#FAFAFA', fontSize: 28, fontWeight: 500, lineHeight: '36px', wordWrap: 'break-word', marginTop: 8 }}>
             Potencia tu rendimiento con productos certificados y envíos seguros a toda Colombia
-          </p>
+          </div>
         </div>
 
-        {/* CTA Buttons */}
-        <div style={{
-          position: 'absolute',
-          left: 66,
-          bottom: 64,
-          display: 'flex',
-          gap: 29
-        }}>
+        <div style={{ position: 'absolute', left: 68, top: 620, display: 'inline-flex', gap: 18, zIndex: 2 }}>
           <button
             onClick={() => navigate('/catalogo')}
-            style={{
-              width: 274,
-              padding: 10,
-              background: '#1F1F21',
-              borderRadius: 10,
-              color: 'white',
-              fontSize: 16,
-              fontWeight: 700,
-              lineHeight: '24px',
-              transition: 'background 0.2s'
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = '#333'}
-            onMouseLeave={e => e.currentTarget.style.background = '#1F1F21'}
+            style={{ width: 274, padding: 10, background: '#1F1F21', borderRadius: 10, color: 'white', fontSize: 16, fontWeight: 700, lineHeight: '24px', cursor: 'pointer' }}
           >
             Ver productos
           </button>
           <button
             onClick={() => navigate('/catalogo')}
-            style={{
-              width: 274,
-              padding: 10,
-              background: 'rgba(254,252,232,0.20)',
-              borderRadius: 10,
-              border: '1px solid #FFEB3B',
-              color: '#FFEB3B',
-              fontSize: 16,
-              fontWeight: 700,
-              lineHeight: '24px'
-            }}
+            style={{ width: 274, padding: 10, background: 'rgba(254,252,232,0.20)', borderRadius: 10, outline: '1px solid #FFEB3B', outlineOffset: '-1px', color: '#FFEB3B', fontSize: 16, fontWeight: 700, lineHeight: '24px', cursor: 'pointer' }}
           >
             Ver productos
           </button>
+        </div>
+
+        <div style={{ position: 'absolute', left: 0, top: 256, paddingTop: 10, paddingBottom: 10, paddingLeft: 68, paddingRight: 10, background: '#FFEB3B', display: 'inline-flex', alignItems: 'center', gap: 10, zIndex: 2 }}>
+          <div style={{ color: 'black', fontSize: 16, fontWeight: 700, lineHeight: '24px', wordWrap: 'break-word' }}>
+            ENVÍO GRATIS en compras superiores a $150.000
+          </div>
         </div>
       </section>
 
@@ -189,7 +138,7 @@ export default function HomePage() {
         {/* Productos populares */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: 25 }}>
           <SectionHeader title="Productos populares" linkTo="/catalogo" />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(220px, 1fr))', gap: 24 }}>
             {popularProducts.map(p => <ProductCard key={p.id} product={p} />)}
           </div>
         </section>
@@ -197,7 +146,7 @@ export default function HomePage() {
         {/* Categorias */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: 25 }}>
           <SectionHeader title="Categorias" linkTo="/catalogo" />
-          <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 16 }}>
             {categories.map(cat => <CategoryCard key={cat.id} category={cat} />)}
           </div>
         </section>
@@ -205,7 +154,7 @@ export default function HomePage() {
         {/* Marcas */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: 25 }}>
           <SectionHeader title="Marcas" linkTo="/marcas" />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 16 }}>
             {brands.map(brand => <BrandCard key={brand.id} brand={brand} />)}
           </div>
         </section>
@@ -213,36 +162,40 @@ export default function HomePage() {
         {/* News Section */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: 25 }}>
           <SectionHeader title="News" />
-          <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-            {/* Card amarilla */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 20 }}>
             <div style={{
-              flex: 1, minWidth: 300, height: 241,
-              background: '#FFEB3B', borderRadius: 10,
-              padding: '30px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
-              position: 'relative', overflow: 'hidden'
+              position: 'relative', borderRadius: 28, overflow: 'hidden', background: '#FFEB3B', padding: 30,
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: 245
             }}>
-              <div style={{ position: 'relative', zIndex: 1 }}>
-                <h3 style={{ fontSize: 32, fontWeight: 700, color: '#1F1F21', lineHeight: '48px', letterSpacing: 0.35 }}>
+              <div style={{ maxWidth: 320 }}>
+                <span style={{ display: 'inline-block', marginBottom: 16, color: '#1F1F21', fontSize: 14, fontWeight: 700, letterSpacing: 1.2, textTransform: 'uppercase' }}>
+                  Nuevo lanzamiento
+                </span>
+                <h3 style={{ fontSize: 32, fontWeight: 700, color: '#1F1F21', lineHeight: '42px', margin: 0 }}>
                   Limonada de Proteína!
                 </h3>
-                <p style={{ fontSize: 22, fontWeight: 500, color: '#544C2B', lineHeight: '22px', letterSpacing: 0.35 }}>
-                  Prueba la nueva IsoPure Tropical Punch con 20g de proteína!
+                <p style={{ marginTop: 12, color: '#544C2B', fontSize: 18, lineHeight: '28px' }}>
+                  Prueba la nueva IsoPure Tropical Punch con 20g de proteína.
                 </p>
               </div>
+              <img src={limonadaNewsImage} alt="Limonada de proteína" style={{ width: 200, maxWidth: '40%', objectFit: 'contain' }} />
             </div>
-            {/* Card oscura */}
             <div style={{
-              flex: 1, minWidth: 300, height: 241,
-              background: 'linear-gradient(0deg, #1F1F21 63%, #343438 100%)',
-              borderRadius: 10, padding: '30px',
-              display: 'flex', flexDirection: 'column', justifyContent: 'center'
+              position: 'relative', borderRadius: 28, overflow: 'hidden', background: 'linear-gradient(180deg, #1F1F21 0%, #343438 100%)', padding: 30,
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: 245
             }}>
-              <h3 style={{ fontSize: 32, fontWeight: 700, color: 'white', lineHeight: '48px', letterSpacing: 0.35 }}>
-                Productos populares
-              </h3>
-              <p style={{ fontSize: 22, fontWeight: 500, color: '#B3B1A9', lineHeight: '22px', letterSpacing: 0.35 }}>
-                Warfury Elite Pre-Workout con descuento especial
-              </p>
+              <div style={{ maxWidth: 320 }}>
+                <span style={{ display: 'inline-block', marginBottom: 16, color: '#FDC700', fontSize: 14, fontWeight: 700, letterSpacing: 1.2, textTransform: 'uppercase' }}>
+                  Oferta exclusiva
+                </span>
+                <h3 style={{ fontSize: 32, fontWeight: 700, color: 'white', lineHeight: '42px', margin: 0 }}>
+                  Productos populares
+                </h3>
+                <p style={{ marginTop: 12, color: '#B3B1A9', fontSize: 18, lineHeight: '28px' }}>
+                  Warfury Elite Pre-Workout con descuento especial.
+                </p>
+              </div>
+              <img src={productosPopularesNewsImage} alt="Productos populares" style={{ width: 200, maxWidth: '40%', objectFit: 'contain' }} />
             </div>
           </div>
         </section>

@@ -18,14 +18,16 @@ export default function ProductCard({ product }) {
     <div
       onClick={() => navigate(`/producto/${product.id}`)}
       style={{
-        width: 315,
-        boxShadow: '0px 2px 10px rgba(0,0,0,0.06)',
-        borderRadius: 10,
+        width: '100%',
+        boxShadow: '0px 24px 80px rgba(15, 23, 42, 0.06)',
+        borderRadius: 24,
         display: 'flex',
         flexDirection: 'column',
         cursor: 'pointer',
         transition: 'transform 0.2s, box-shadow 0.2s',
-        flexShrink: 0
+        flexShrink: 0,
+        overflow: 'hidden',
+        background: 'white'
       }}
       onMouseEnter={e => {
         e.currentTarget.style.transform = 'translateY(-4px)';

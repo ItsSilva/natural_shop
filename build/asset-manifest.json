@@ -1,13 +1,18 @@
 {
   "files": {
     "main.css": "/static/css/main.0a41b2ab.css",
-    "main.js": "/static/js/main.f675d412.js",
+    "main.js": "/static/js/main.620023f3.js",
+    "static/media/banner-hero-quienes-somos.svg": "/static/media/banner-hero-quienes-somos.2892b21f5c5fdb0a09fefe7887d22e1f.svg",
+    "static/media/productos-propulares-card-news.svg": "/static/media/productos-propulares-card-news.aab06eac63f8b5fc5f878a98b474482d.svg",
+    "static/media/banner-hero-home.svg": "/static/media/banner-hero-home.76f8b262febc933a2715862910072165.svg",
+    "static/media/limonada-proteina-card-news.svg": "/static/media/limonada-proteina-card-news.7a4eca71a7f5c8491bd7cbd588021cd8.svg",
+    "static/media/100-originales-right-img.svg": "/static/media/100-originales-right-img.cc02d910024ae3981c11748512942920.svg",
     "index.html": "/index.html",
     "main.0a41b2ab.css.map": "/static/css/main.0a41b2ab.css.map",
-    "main.f675d412.js.map": "/static/js/main.f675d412.js.map"
+    "main.620023f3.js.map": "/static/js/main.620023f3.js.map"
   },
   "entrypoints": [
     "static/css/main.0a41b2ab.css",
-    "static/js/main.f675d412.js"
+    "static/js/main.620023f3.js"
   ]
 }
