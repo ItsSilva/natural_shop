@@ -1,7 +1,21 @@
 import { supabase } from '../utils/supabase.js'
 
+// Normalize Supabase product row → shape expected by components
+function normalize(product) {
+  if (!product) return product
+  return {
+    ...product,
+    brand: product.brand_name,
+    image: product.image_url,
+    originalPrice: product.original_price,
+    flavors: Array.isArray(product.flavors) ? product.flavors : [],
+  }
+}
+
 // Product-related database operations
 export const productService = {
+  supabase,
+
   // Get all active products
   async getAllProducts() {
     const { data, error } = await supabase
@@ -11,7 +25,7 @@ export const productService = {
       .order('created_at', { ascending: false })
 
     if (error) throw error
-    return data
+    return (data || []).map(normalize)
   },
 
   // Get product by ID
@@ -24,7 +38,7 @@ export const productService = {
       .single()
 
     if (error) throw error
-    return data
+    return normalize(data)
   },
 
   // Get product by slug
@@ -37,7 +51,7 @@ export const productService = {
       .single()
 
     if (error) throw error
-    return data
+    return normalize(data)
   },
 
   // Get products by category
@@ -50,7 +64,7 @@ export const productService = {
       .order('created_at', { ascending: false })
 
     if (error) throw error
-    return data
+    return (data || []).map(normalize)
   },
 
   // Get products by brand
@@ -63,7 +77,7 @@ export const productService = {
       .order('created_at', { ascending: false })
 
     if (error) throw error
-    return data
+    return (data || []).map(normalize)
   },
 
   // Search products
@@ -76,7 +90,7 @@ export const productService = {
       .order('created_at', { ascending: false })
 
     if (error) throw error
-    return data
+    return (data || []).map(normalize)
   },
 
   // Get all categories
@@ -87,7 +101,7 @@ export const productService = {
       .order('name')
 
     if (error) throw error
-    return data
+    return data || []
   },
 
   // Get all brands
@@ -98,7 +112,7 @@ export const productService = {
       .order('name')
 
     if (error) throw error
-    return data
+    return data || []
   },
 
   // Get all stores
@@ -110,6 +124,6 @@ export const productService = {
       .order('city')
 
     if (error) throw error
-    return data
+    return data || []
   }
 }
